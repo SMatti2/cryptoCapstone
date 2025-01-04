@@ -1,5 +1,11 @@
+env
 .env
 __*
+.vscode/
+.DS_Store
+.pytest_cache/
+.mypy_cache/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
