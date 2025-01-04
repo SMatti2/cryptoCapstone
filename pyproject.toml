@@ -1,0 +1,6 @@
+[tool.poetry]
+name = "Cryptocurrencies Price Predictor"
+version = "0.1.0"
+description = "Deep Learning and NLP-based Cryptocurrency Price Prediction"
+readme = "README.md"
+
