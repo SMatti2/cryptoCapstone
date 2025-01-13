@@ -6,6 +6,8 @@ import pandas as pd
 from datetime import datetime
 from pathlib import Path
 
+from src.data_collection.gold import fetch_futures_prices_to_csv
+
 
 def test_fetch_futures_prices_to_csv(tmp_path):
     """
