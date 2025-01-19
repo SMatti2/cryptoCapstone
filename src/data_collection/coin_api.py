@@ -1,8 +1,10 @@
 import os
 import requests
 import csv
+
 from datetime import datetime, timedelta
 from config import config
+
 from src.models.client import Client
 
 
