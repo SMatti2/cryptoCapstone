@@ -5,7 +5,7 @@ from src.cleaning import CryptoDataCleaner
 
 
 class TestCryptoDataCleaner(unittest.TestCase):
-    def setup(self):
+    def setUp(self):
         # df for testing
         self.df = pd.DataFrame(
             {
