@@ -1,10 +1,9 @@
-import os
-import requests
-import csv
+import os, requests, csv
 
 from datetime import datetime, timedelta
-from config import config
+from pathlib import Path
 
+from config import config
 from src.models.client import Client
 
 
@@ -14,16 +13,22 @@ def fetch_ohlcv_data_to_csv(
     exchange_id: str = "COINBASE",
     start_date: datetime = None,
     end_date: datetime = None,
-    output_dir: str = "data/data_raw/crypto_prices",
+    output_dir: Path = None,
 ):
     # format symbol for coinAPI
     full_symbol = f"{symbol.upper()}_USD"
 
     # create output directory
-    os.makedirs(output_dir, exist_ok=True)
+    if output_dir is None:
+        output_dir = config.DATA_DIR / "raw" / "crypto_prices"
+    else:
+        output_dir = Path(output_dir)
+    # ensure the output directory exists
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     #  create filename
     filename = f"{full_symbol.lower()}_{start_date.date()}_to_{end_date.date()}.csv"
-    filepath = os.path.join(output_dir, filename)
+    filepath = output_dir / filename
 
     # create csv file
     with open(filepath, "w", newline="") as csvfile:
