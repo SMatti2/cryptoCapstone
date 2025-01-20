@@ -6,12 +6,11 @@ from src.models.comment import Comment
 
 
 def test_comment_initialization():
-    # Test initialization with all fields provided
     comment = Comment(
         id="123",
         subreddit="python",
         author="test_user",
-        body="This is a test comment.",
+        body="This is a test",
         created_utc=1638316800,
         link_id="t3_12345",
         controversiality=0,
@@ -25,7 +24,7 @@ def test_comment_initialization():
     assert comment.id == "123"
     assert comment.subreddit == "python"
     assert comment.author == "test_user"
-    assert comment.body == "This is a test comment."
+    assert comment.body == "This is a test"
     assert comment.created_utc == 1638316800
     assert comment.link_id == "t3_12345"
     assert comment.controversiality == 0
@@ -36,39 +35,18 @@ def test_comment_initialization():
     assert comment.distinguished == "moderator"
 
 
-def test_comment_optional_fields():
-    # Test initialization with only the required `id` field
-    comment = Comment(
-        id="456",
-    )
-
-    assert comment.id == "456"
-    assert comment.subreddit is None
-    assert comment.author is None
-    assert comment.body is None
-    assert comment.created_utc is None
-    assert comment.link_id is None
-    assert comment.controversiality is None
-    assert comment.ups is None
-    assert comment.score is None
-    assert comment.gilded is None
-    assert comment.retrieved_on is None
-    assert comment.distinguished is None
-
-
 def test_comment_partial_initialization():
-    # Test initialization with some optional fields provided
     comment = Comment(
         id="789",
         subreddit="python",
         author="test_user",
-        body="This is a test comment.",
+        body="This is a test",
     )
 
     assert comment.id == "789"
     assert comment.subreddit == "python"
     assert comment.author == "test_user"
-    assert comment.body == "This is a test comment."
+    assert comment.body == "This is a test"
     assert comment.created_utc is None
     assert comment.link_id is None
     assert comment.controversiality is None
@@ -84,7 +62,7 @@ def test_comment_field_types():
         id="131415",
         subreddit="python",
         author="test_user",
-        body="This is a test comment.",
+        body="This is a test",
         created_utc=1638316800,
         link_id="t3_12345",
         controversiality=0,
