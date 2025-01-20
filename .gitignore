@@ -5,7 +5,7 @@ __*
 .DS_Store
 .pytest_cache/
 .mypy_cache/
-data/raw/reddit/*
+data/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
