@@ -1,7 +1,4 @@
 import pytest
-from typing import Optional
-from sqlmodel import SQLModel, Field
-from pydantic import ValidationError
 from src.models.comment import Comment
 
 
@@ -20,7 +17,6 @@ def test_comment_initialization():
         retrieved_on=1638316800,
         distinguished="moderator",
     )
-
     assert comment.id == "123"
     assert comment.subreddit == "python"
     assert comment.author == "test_user"
@@ -37,12 +33,8 @@ def test_comment_initialization():
 
 def test_comment_partial_initialization():
     comment = Comment(
-        id="789",
-        subreddit="python",
-        author="test_user",
-        body="This is a test",
+        id="789", subreddit="python", author="test_user", body="This is a test"
     )
-
     assert comment.id == "789"
     assert comment.subreddit == "python"
     assert comment.author == "test_user"
@@ -72,7 +64,6 @@ def test_comment_field_types():
         retrieved_on=1638316800,
         distinguished="moderator",
     )
-
     assert isinstance(comment.id, str)
     assert isinstance(comment.subreddit, str)
     assert isinstance(comment.author, str)

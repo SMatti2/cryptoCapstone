@@ -1,5 +1,7 @@
 from typing import Optional
-from sqlmodel import SQLModel, Field
+from sqlmodel import SQLModel, Field, Relationship
+
+from src.models.post import Post
 
 
 class Comment(SQLModel, table=True):
@@ -15,3 +17,6 @@ class Comment(SQLModel, table=True):
     gilded: Optional[int] = Field(default=None, nullable=True)
     retrieved_on: Optional[int] = Field(default=None, nullable=True)
     distinguished: Optional[str] = Field(default=None, nullable=True)
+
+    post_id: Optional[str] = Field(default=None, foreign_key="post.id")
+    post: Optional["Post"] = Relationship(back_populates="comments")
