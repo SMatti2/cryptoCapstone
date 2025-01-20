@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 from datetime import datetime
-from src.cleaning import CryptoDataCleaner
+from src.preprocessing.cleaning import CryptoDataCleaner
 
 
 class TestCryptoDataCleaner(unittest.TestCase):
