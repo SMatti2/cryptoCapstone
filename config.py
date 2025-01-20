@@ -1,9 +1,11 @@
 from pydantic_settings import BaseSettings
+from pathlib import Path
 
 
 class AppConfig(BaseSettings):
     COIN_API_KEY: str
     DATABASE_URL: str
+    DATA_DIR: Path = Path(__file__).resolve().parent / "data"
 
     class Config:
         # Loads the environment variables from a '.env' file
@@ -16,3 +18,5 @@ config = AppConfig()
 if __name__ == "__main__":
     config = AppConfig()
     print(config.COIN_API_KEY)
+    print(config.DATABASE_URL)
+    print(config.DATA_DIR)
