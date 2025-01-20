@@ -1,5 +1,5 @@
-from typing import Optional
-from sqlmodel import SQLModel, Field
+from typing import Optional, List
+from sqlmodel import SQLModel, Field, Relationship
 
 
 class Post(SQLModel, table=True):
@@ -14,6 +14,8 @@ class Post(SQLModel, table=True):
     url: str = Field()
     archived: bool = Field(default=False)
     domain: Optional[str] = Field(default=None, nullable=True)
-    over_18: bool = Field(default=False)
     permalink: str = Field()
     is_video: bool = Field(default=False)
+
+    # Relationship to comments:
+    comments: List["Comment"] = Relationship(back_populates="post")
