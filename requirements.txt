@@ -45,6 +45,8 @@ pyzmq==26.2.0
 requests==2.32.3
 six==1.17.0
 soupsieve==2.6
+SQLAlchemy==2.0.37
+sqlmodel==0.0.22
 stack-data==0.6.3
 tornado==6.4.2
 traitlets==5.14.3
@@ -54,3 +56,4 @@ urllib3==2.3.0
 wcwidth==0.2.13
 webencodings==0.5.1
 yfinance==0.2.51
+zstandard==0.23.0

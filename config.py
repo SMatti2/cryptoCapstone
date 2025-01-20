@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings
 
 class AppConfig(BaseSettings):
     COIN_API_KEY: str
+    DATABASE_URL: str
 
     class Config:
         # Loads the environment variables from a '.env' file
