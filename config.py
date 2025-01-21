@@ -1,6 +1,15 @@
 from pydantic_settings import BaseSettings
 from pathlib import Path
 
+dtype_dict = {
+    "open": float,
+    "high": float,
+    "low": float,
+    "close": float,
+    "volume": float,
+    "marketCap": float,
+}
+
 
 class AppConfig(BaseSettings):
     COIN_API_KEY: str
