@@ -27,7 +27,6 @@ class AppConfig(BaseSettings):
         "priceMovement",
         "PSAR_down",
         "PSAR_up",
-        "logPriceChange",
         "AO",
         "PPO_Histogram",
         "PVO_Histogram",
