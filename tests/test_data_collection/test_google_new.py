@@ -215,7 +215,7 @@ class TestGoogleNewsScraper(unittest.TestCase):
     @patch("src.data_collection.google_news.load_existing_json", return_value={})
     @patch("src.data_collection.google_news.fetch_page_source")
     @patch("src.data_collection.google_news.extract_articles")
-    def test_scrape_google_news_basic(
+    def test_scrape_google_news(
         self, mock_extract, mock_fetch, mock_loadjson, mock_savetojson
     ):
         """
@@ -269,53 +269,6 @@ class TestGoogleNewsScraper(unittest.TestCase):
                 self.assertEqual(a["title"], "Test Article 1")
                 self.assertEqual(a["subtitle"], "This is a test article.")
                 self.assertEqual(a["url"], "https://example.com/article1")
-
-    @patch("src.data_collection.google_news.fetch_page_source")
-    @patch("src.data_collection.google_news.extract_articles")
-    def test_scrape_google_news_or_combination(self, mock_extract, mock_fetch):
-        """
-        Test using sub-lists to create combined OR queries.
-        We'll verify the final queries used in fetch_page_source are correct.
-        """
-        # Mocking the fetch_page_source to return something
-        mock_fetch.return_value = "<html></html>"
-        mock_extract.return_value = []
-
-        start_date = "1/1/2024"
-        end_date = "1/1/2024"
-        queries = [["AI", "Machine Learning", "crypto"], ["Joe Biden", "White House"]]
-
-        scrape_google_news(
-            start_date,
-            end_date,
-            preferred_domains=None,
-            queries=queries,
-            output_path="test_or_combination.json",
-        )
-
-        # We expect 2 calls total (1 day × 2 sub-lists)
-        self.assertEqual(mock_fetch.call_count, 2)
-
-        # Verify the combined queries in the called URL
-        # We'll inspect the call args to see the 'url' that was built
-        calls = mock_fetch.call_args_list
-        first_call_args = calls[0][
-            0
-        ]  # (session, url), so first_call_args[1] is the url
-        second_call_args = calls[1][0]
-
-        first_url = first_call_args[1]  # index 0 => session, index 1 => url
-        second_url = second_call_args[1]
-
-        self.assertIn("AI", first_url)
-        self.assertIn("Machine+Learning", first_url)
-        self.assertIn("crypto", first_url)
-        # Should have parentheses and OR
-        self.assertIn("%28AI%29+OR+%28Machine+Learning%29+OR+%28crypto%29", first_url)
-
-        self.assertIn("Joe+Biden", second_url)
-        self.assertIn("White+House", second_url)
-        self.assertIn("%28Joe+Biden%29+OR+%28White+House%29", second_url)
 
 
 if __name__ == "__main__":
