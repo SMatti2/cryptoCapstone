@@ -47,31 +47,39 @@ def log_heteroskedastic_vars(
         if col == target or col in variables_to_exclude:
             continue
 
-        series = df[col].dropna()
-        if len(series) < 10:  # Minimum observations check
+        # Use original series without dropping NaNs
+        series = df[col].copy()
+
+        # Skip if insufficient non-NaN data
+        if series.count() < 10:  # Check non-null count instead of len()
             if verbose:
                 print(f"Skipped {col} - insufficient data")
             continue
 
-        # Check heteroskedasticity on original series
-        het_result = check_heteroskedasticity(series, alpha)
+        # Check heteroskedasticity on non-null values
+        non_null_series = series.dropna()
+        het_result = check_heteroskedasticity(non_null_series, alpha)
 
         if het_result["needs_transform"]:
-            if (series > 0).all():
-                # Apply log transform for positive-definite series
-                processed_df[col] = np.log(series)
+            # Create mask for non-null values
+            mask = series.notna()
+
+            if (series[mask] > 0).all():
+                # Apply log transform to non-null values
+                processed_df.loc[mask, col] = np.log(series[mask])
                 if verbose:
                     print(f"Applied log transform to {col}")
             else:
-                # Use Yeo-Johnson for series with negatives/zeros
+                # Apply Yeo-Johnson to non-null values
                 pt = PowerTransformer(method="yeo-johnson")
-                processed_df[col] = pt.fit_transform(
-                    series.values.reshape(-1, 1)
+                transformed = pt.fit_transform(
+                    series[mask].values.reshape(-1, 1)
                 ).ravel()
+                processed_df.loc[mask, col] = transformed
                 if verbose:
                     print(f"Applied Yeo-Johnson to {col}")
 
-    # Preserve target and excluded columns
+    # Preserve target and excluded columns (no changes needed here)
     processed_df[target] = df[target]
     for col in variables_to_exclude:
         if col in df.columns:
@@ -83,18 +91,11 @@ def log_heteroskedastic_vars(
 # Usage example
 if __name__ == "__main__":
     # Load raw data
-    df = (
-        pd.read_csv(
-            "data/processed/crypto_prices/eth.csv",
-            parse_dates=["date"],
-            index_col="date",
-        )
-        .dropna()
-        .sort_index()
+    df = pd.read_csv(
+        "data/processed/crypto_prices/eth.csv",
+        parse_dates=["date"],
+        index_col="date",
     )
 
-    # Handle heteroskedasticity only
     processed_df = log_heteroskedastic_vars(df, verbose=True)
-
-    # Save results
     processed_df.to_csv("data/processed/crypto_prices/heteroskedasticity_processed.csv")
