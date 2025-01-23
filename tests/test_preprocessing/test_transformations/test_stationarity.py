@@ -1,29 +1,33 @@
 import unittest
 import numpy as np
 
-from src.preprocessing.transformations.stationarity import adf_test
+from src.preprocessing.transformations.stationarity import adf_test, pp_test
 
 
-class TestStationarityTest(unittest.TestCase):
-
-    def test_stationary_series(self):
-        # Create a stationary time series (e.g., white noise)
+class TestStationarity(unittest.TestCase):
+    def setUp(self):
         np.random.seed(42)
-        stationary_series = np.random.normal(0, 1, 100)
+        self.stationary_series = np.random.normal(0, 1, 100)
+        self.non_stationary_series = np.cumsum(np.random.normal(0, 1, 100))
 
-        # Perform ADF test with alpha = 0.05
-        result = adf_test(stationary_series, alpha=0.05)
-
-        # Check if the series is identified as stationary
+    # ADF Tests
+    def test_adf_stationary(self):
+        result = adf_test(self.stationary_series, 0.05)
         self.assertTrue(result["Stationary"])
 
-    def test_non_stationary_series(self):
-        # Create a non-stationary time series (e.g., random walk)
-        np.random.seed(42)
-        non_stationary_series = np.cumsum(np.random.normal(0, 1, 100))
-
-        # Perform ADF test with alpha = 0.05
-        result = adf_test(non_stationary_series, alpha=0.05)
-
-        # Check if the series is identified as non-stationary
+    def test_adf_non_stationary(self):
+        result = adf_test(self.non_stationary_series, 0.05)
         self.assertFalse(result["Stationary"])
+
+    # PP Tests
+    def test_pp_stationary(self):
+        result = pp_test(self.stationary_series, 0.05)
+        self.assertTrue(result["Stationary"])
+
+    def test_pp_non_stationary(self):
+        result = pp_test(self.non_stationary_series, 0.05)
+        self.assertFalse(result["Stationary"])
+
+
+if __name__ == "__main__":
+    unittest.main()
