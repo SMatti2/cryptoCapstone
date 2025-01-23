@@ -47,14 +47,8 @@ def log_heteroskedastic_vars(
         if col == target or col in variables_to_exclude:
             continue
 
-        # Use original series without dropping NaNs
+        # copy column
         series = df[col].copy()
-
-        # Skip if insufficient non-NaN data
-        if series.count() < 10:  # Check non-null count instead of len()
-            if verbose:
-                print(f"Skipped {col} - insufficient data")
-            continue
 
         # Check heteroskedasticity on non-null values
         non_null_series = series.dropna()
@@ -79,7 +73,7 @@ def log_heteroskedastic_vars(
                 if verbose:
                     print(f"Applied Yeo-Johnson to {col}")
 
-    # Preserve target and excluded columns (no changes needed here)
+    # Preserve target and excluded columns
     processed_df[target] = df[target]
     for col in variables_to_exclude:
         if col in df.columns:
