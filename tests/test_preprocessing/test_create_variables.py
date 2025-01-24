@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import pytest
+from pandas.testing import assert_frame_equal
+
 from src.preprocessing.create_variables import (
     calculate_mfi,
     create_log_price_change,
@@ -66,10 +68,6 @@ def test_create_day_of_week_sin_cos():
     # check if the values are within (-1 to 1)
     assert np.all(df["dayOfWeek_Sin"].between(-1, 1))
     assert np.all(df["dayOfWeek_Cos"].between(-1, 1))
-
-
-import pandas as pd
-from pandas.testing import assert_frame_equal
 
 
 def test_create_variables():
