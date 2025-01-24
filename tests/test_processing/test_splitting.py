@@ -50,7 +50,3 @@ def test_time_based_split():
     assert len(test) == expected_test_size, "Test set size is incorrect"
 
     print("All tests passed!")
-
-
-# Run the test
-test_time_based_split()
