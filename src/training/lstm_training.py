@@ -37,7 +37,7 @@ def train_lstm(X_train, y_train, X_val, y_val, params):
         validation_data=(X_val, y_val),
         epochs=params.get("epochs", 100),
         batch_size=params.get("batch_size", 32),
-        callbacks=[EarlyStopping(patience=10, restore_best_weights=True)],
+        callbacks=[EarlyStopping(patience=20, restore_best_weights=True)],
         shuffle=False,
         verbose=1,
     )
