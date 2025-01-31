@@ -17,7 +17,7 @@ def test_run_trading_simulation():
 
     # Run the trading simulation
     portfolio = run_trading_simulation(
-        df_pred, df, initial_capital=1000.0, amount_per_investment=500.0
+        df_pred, df, initial_capital=1000.0, trade_amount=500.0
     )
 
     # Assertions to check the final portfolio state
@@ -25,5 +25,5 @@ def test_run_trading_simulation():
     assert portfolio["holdings"] >= 0, "Holdings should not be negative"
     assert portfolio["trades_executed"] > 0, "At least one trade should be executed"
     assert (
-        len(portfolio["portfolio_value"]) == len(df_pred) - 1
+        len(portfolio["portfolio_values"]) == len(df_pred) - 1
     ), "Portfolio value should be recorded for each trade"
