@@ -2,22 +2,30 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 
-def insert_google_trends_data_in_df(file_path, df, value_col, date_col="date"):
+def insert_google_trends_data_in_df(
+    file_path, df, value_col, date_col="date", is_monthly=False, rows_to_skip=0
+):
 
-    monthly_data = pd.read_csv(file_path, skiprows=1)
-    monthly_data.columns = ["Month", value_col]
-    monthly_data["Month"] = pd.to_datetime(monthly_data["Month"])
+    df_to_add = pd.read_csv(file_path, skiprows=rows_to_skip)
 
-    trends_daily = pd.DataFrame()
+    if is_monthly:
+        df_to_add.columns = ["Month", value_col]
+        df_to_add["Month"] = pd.to_datetime(df_to_add["Month"])
+        trends_daily = pd.DataFrame()
 
-    for index, row in monthly_data.iterrows():
-        month_start = row["Month"]
-        month_end = month_start + pd.offsets.MonthEnd(0)
-        date_range = pd.date_range(start=month_start, end=month_end, freq="D")
+        for index, row in df_to_add.iterrows():
+            month_start = row["Month"]
+            month_end = month_start + pd.offsets.MonthEnd(0)
+            date_range = pd.date_range(start=month_start, end=month_end, freq="D")
+            data = pd.DataFrame({date_col: date_range, value_col: row[value_col]})
+            trends_daily = pd.concat([trends_daily, data]).reset_index(drop=True)
 
-        data = pd.DataFrame({date_col: date_range, value_col: row[value_col]})
-        trends_daily = pd.concat([trends_daily, data]).reset_index(drop=True)
+        df_to_add = trends_daily
+    else:
+        # daily data
+        df_to_add.columns = [date_col, value_col]
+        df_to_add[date_col] = pd.to_datetime(df_to_add[date_col])
 
-    merged_df = pd.merge(df, trends_daily, on=date_col, how="left").set_index(date_col)
+    merged_df = pd.merge(df, df_to_add, on=date_col, how="left").set_index(date_col)
 
     return merged_df
