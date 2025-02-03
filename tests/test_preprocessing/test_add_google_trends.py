@@ -21,7 +21,9 @@ Month,gTrendsBitcoin
     with open(temp_file_path, "w") as f:
         f.write(csv_content)
 
-    result_df = insert_google_trends_data_in_df(temp_file_path, df, "gTrendsBitcoin")
+    result_df = insert_google_trends_data_in_df(
+        temp_file_path, df, "gTrendsBitcoin", is_monthly=True, rows_to_skip=1
+    )
 
     assert "gTrendsBitcoin" in result_df.columns
     assert result_df["gTrendsBitcoin"].iloc[0] == 100
