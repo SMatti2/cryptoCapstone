@@ -8,7 +8,7 @@ from config import config
 
 def check_heteroskedasticity(series, alpha=0.05):
     """Check heteroskedasticity in a single feature's own time series"""
-    X = sm.add_constant(np.arange(len(series)))  # Time trend
+    X = sm.add_constant(np.arange(len(series)))
     model = sm.OLS(series, X).fit()
     residuals = model.resid
 
@@ -36,21 +36,14 @@ def log_heteroskedastic_vars(
     alpha=0.05,
     verbose=False,
 ):
-    """
-    Heteroskedasticity-focused preprocessing:
-    1. Checks each feature's variance stability
-    2. Applies transformations where needed
-    """
     processed_df = df.copy()
 
     for col in df.columns:
         if col == target or col in variables_to_exclude:
             continue
 
-        # copy column
         series = df[col].copy()
 
-        # Check heteroskedasticity on non-null values
         non_null_series = series.dropna()
         het_result = check_heteroskedasticity(non_null_series, alpha)
 
@@ -80,16 +73,3 @@ def log_heteroskedastic_vars(
             processed_df[col] = df[col]
 
     return processed_df
-
-
-# Usage example
-if __name__ == "__main__":
-    # Load raw data
-    df = pd.read_csv(
-        "data/processed/crypto_prices/eth.csv",
-        parse_dates=["date"],
-        index_col="date",
-    )
-
-    processed_df = log_heteroskedastic_vars(df, verbose=True)
-    processed_df.to_csv("data/processed/crypto_prices/heteroskedasticity_processed.csv")

@@ -7,7 +7,7 @@ from arch.unitroot import PhillipsPerron
 
 
 def adf_test(series, alpha):
-    """Augmented Dickey-Fuller test (unit root null)"""
+    """Augmented Dickey-Fuller test"""
     result = adfuller(series, autolag="AIC")
     return {
         "Test Statistic": result[0],
@@ -17,7 +17,7 @@ def adf_test(series, alpha):
 
 
 def pp_test(series, alpha):
-    """Phillips-Perron test (unit root null)"""
+    """Phillips-Perron test"""
     result = PhillipsPerron(series)
     return {
         "Test Statistic": result.stat,
@@ -27,7 +27,7 @@ def pp_test(series, alpha):
 
 
 def kpss_test(series, alpha):
-    """KPSS test (stationarity null)"""
+    """KPSS test"""
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", InterpolationWarning)
         result = kpss(series, regression="c", nlags="auto")
@@ -63,7 +63,7 @@ def difference_non_stationary_features(
         # Forward-fill NaNs and track changes
         filled_series = original_series.ffill()
         n_filled = original_series.isna().sum() - filled_series.isna().sum()
-        n_leading_dropped = filled_series.isna().sum()  # Leading NaNs after fill
+        n_leading_dropped = filled_series.isna().sum()
 
         # Remove any remaining leading NaNs
         clean_series = filled_series.dropna()
@@ -81,14 +81,13 @@ def difference_non_stationary_features(
                 print("Skipping - insufficient data after cleaning")
             continue
 
-        # Perform stationarity tests on clean series
+        # check stationarity
         tests = {
             "ADF": adf_test(clean_series, alpha),
             "PP": pp_test(clean_series, alpha),
             "KPSS": kpss_test(clean_series, alpha),
         }
 
-        # Voting logic for non-stationarity
         non_stationary_votes = sum(
             [
                 not tests["ADF"]["Stationary"],
@@ -98,14 +97,12 @@ def difference_non_stationary_features(
         )
 
         if non_stationary_votes >= 2:
-            # Apply differencing to cleaned series
             differenced = clean_series.diff()
 
             # Preserve original index structure
             df_transformed.loc[clean_series.index, col] = differenced
             differenced_columns.append(col)
 
-    # Final cleanup after all transformations
     df_transformed = df_transformed.dropna()
 
     if verbose:
@@ -116,14 +113,3 @@ def difference_non_stationary_features(
         print(f"Clean data points remaining: {len(clean_series)}")
 
     return df_transformed, differenced_columns
-
-
-if __name__ == "__main__":
-    # Load raw data
-    df = pd.read_csv(
-        "data/processed/crypto_prices/eth.csv",
-        parse_dates=["date"],
-        index_col="date",
-    )
-
-    processed_df, diff_cols = difference_non_stationary_features(df, verbose=True)
