@@ -17,9 +17,7 @@ def insert_google_trends_data_in_df(file_path, df, value_col, date_col="date"):
 
         data = pd.DataFrame({date_col: date_range, value_col: row[value_col]})
         trends_daily = pd.concat([trends_daily, data]).reset_index(drop=True)
-    # Debug: Print DataFrames before merging
-    print("DF DataFrame:\n", df.head())
-    print("Trends Daily DataFrame:\n", trends_daily.head())
+
     merged_df = pd.merge(df, trends_daily, on=date_col, how="left").set_index(date_col)
 
     return merged_df
