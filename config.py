@@ -15,6 +15,9 @@ class AppConfig(BaseSettings):
     COIN_API_KEY: str
     DATABASE_URL: str
     DATA_DIR: Path = Path(__file__).resolve().parent / "data"
+    DEEPSEEK_API_KEY: str
+    OPENAI_API_KEY: str
+
     EXCLUDE_VARIABLES: list[str] = [
         "localMin_7",
         "localMax_7",
@@ -51,5 +54,7 @@ config = AppConfig()
 if __name__ == "__main__":
     config = AppConfig()
     print(config.COIN_API_KEY)
+    print(config.DEEPSEEK_API_KEY)
+    print(config.OPENAI_API_KEY)
     print(config.DATABASE_URL)
     print(config.DATA_DIR)
