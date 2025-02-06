@@ -101,7 +101,7 @@ class CryptoNewsSentimentAnalyzer:
 
                 if self.verbose:
                     print(
-                        f"Processed article {idx} | Date: {row['date'].date()} | Score: {score}"
+                        f"Processed article {idx} | Date: {row['date'].date()} | Score: {score} | Title: {row['title']}"
                     )
 
                 results.append({"date": row["date"], "score": score})
