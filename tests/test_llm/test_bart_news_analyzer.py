@@ -40,6 +40,16 @@ class TestCryptoNewsAnalyzer(unittest.TestCase):
         self.assertTrue("article_count" in result.columns)
         self.assertTrue("relevant_articles" in result.columns)
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_analyze_articles(self):
+        data = {
+            "title": ["Title1", "Title2", "Title3"],
+            "subtitle": ["Subtitle1", "Subtitle2", "Subtitle3"],
+            "date": ["2023-03-15", "2023-03-15", "2023-03-16"],
+        }
+        df = pd.DataFrame(data)
+        start_date = "2023-03-15"
+        end_date = "2023-03-16"
+        result = self.analyzer.analyze_articles(df, start_date, end_date)
+        self.assertTrue("average_score" in result.columns)
+        self.assertTrue("article_count" in result.columns)
+        self.assertTrue("relevant_articles" in result.columns)
