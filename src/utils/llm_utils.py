@@ -31,7 +31,7 @@ def add_daily_aggregates(df: pd.DataFrame):
     grouped = (
         df.groupby(pd.Grouper(key="date", freq="D"))
         .agg(
-            average_score=("score", "mean"),  # ignores NaNs automatically
+            average_score=("score", "mean"),
             article_count=("score", "size"),
             relevant_articles=("score", lambda x: np.count_nonzero(~np.isnan(x))),
         )
