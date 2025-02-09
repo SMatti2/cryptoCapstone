@@ -10,6 +10,7 @@ def calculate_mfi(high, low, close, volume, period):
     typical_price = (high + low + close) / 3
     money_flow = typical_price * volume
     mf_sign = np.where(typical_price > np.roll(typical_price, shift=1), 1, -1)
+
     signed_mf = money_flow * mf_sign
 
     # Calculate gain and loss using vectorized operations
@@ -38,28 +39,12 @@ def create_log_price_change(df):
 
 def create_local_extrema(df, periods: [int], price_column: str):
     for period in periods:
-        min_indicator = np.zeros(len(df), dtype=int)
-        max_indicator = np.zeros(len(df), dtype=int)
-
-        for i in range(len(df)):
-            start_idx = max(i - period, 0)
-            end_idx = min(i + period, len(df) - 1)
-            window_data = df[price_column].iloc[start_idx : end_idx + 1]
-
-            current_price = df[price_column].iloc[i]
-
-            if current_price == window_data.min():
-                min_indicator[i] = 1
-            else:
-                min_indicator[i] = 0
-
-            if current_price == window_data.max():
-                max_indicator[i] = 1
-            else:
-                max_indicator[i] = 0
-
-        df[f"localMin_{period}"] = min_indicator
-        df[f"localMax_{period}"] = max_indicator
+        df[f"localMin_{period}"] = (
+            df[price_column] == df[price_column].rolling(period, min_periods=1).min()
+        ).astype(int)
+        df[f"localMax_{period}"] = (
+            df[price_column] == df[price_column].rolling(period, min_periods=1).max()
+        ).astype(int)
 
 
 def create_day_of_week_sin_cos(df):
@@ -173,7 +158,7 @@ def calculate_technical_indicators(df):
     df["DPO"] = df.ta.dpo()
 
     # Ichimoku Cloud
-    ichimoku_df, span_df = df.ta.ichimoku()
+    ichimoku_df = df.ta.ichimoku(include_leading_span=False)
 
     df["Ichimoku_A"] = ichimoku_df["ISA_9"]
     df["Ichimoku_B"] = ichimoku_df["ISB_26"]
