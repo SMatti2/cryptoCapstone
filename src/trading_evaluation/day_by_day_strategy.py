@@ -4,11 +4,10 @@ import matplotlib.pyplot as plt
 
 
 def shift_and_convert_binary(df_pred):
-    df_processed = df_pred.copy()
-    df_processed["predictedPriceMovement"] = (
-        df_processed["predictedLogPriceChange"] > 0
-    ).astype(int)
-    return df_processed.shift(-1).dropna()
+    df_pred["predictedPriceMovement"] = (df_pred["predictedLogPriceChange"] > 0).astype(
+        int
+    )
+    return df_pred.dropna()
 
 
 def generate_trades(df_pred_processed, price_df):
