@@ -70,6 +70,33 @@ class CryptoNewsSentimentAnalyzer:
                 print(f"Classification error: {e}")
             return np.nan
 
+        return self._aggregate_results(pd.DataFrame(results))
+
+    def _aggregate_results(self, results_df: pd.DataFrame):
+        if results_df.empty:
+            return pd.DataFrame(columns=["date", "average_score"])
+
+        results_df["date"] = pd.to_datetime(results_df["date"])
+        grouped = (
+            results_df.groupby(pd.Grouper(key="date", freq="D"))
+            .agg(
+                average_score=("score", "mean"),
+                article_count=("score", "size"),
+                valid_scores=("score", "count"),
+            )
+            .reset_index()
+        )
+
+        if self.verbose:
+            for _, row in grouped.iterrows():
+                print(f"Date: {row['date'].date()}")
+                print(
+                    f"  Articles: {row['article_count']} | Valid: {row['valid_scores']}"
+                )
+                print(f"  Average: {row['average_score']:.2f}\n")
+
+        return grouped[["date", "average_score"]]
+
     def analyze_articles_in_range(
         self, df: pd.DataFrame, start_date: str, end_date: str
     ):
@@ -107,28 +134,3 @@ class CryptoNewsSentimentAnalyzer:
                 results.append({"date": row["date"], "score": score})
 
         return self._aggregate_results(pd.DataFrame(results))
-
-    def _aggregate_results(self, results_df: pd.DataFrame) -> pd.DataFrame:
-        if results_df.empty:
-            return pd.DataFrame(columns=["date", "average_score"])
-
-        results_df["date"] = pd.to_datetime(results_df["date"])
-        grouped = (
-            results_df.groupby(pd.Grouper(key="date", freq="D"))
-            .agg(
-                average_score=("score", "mean"),
-                article_count=("score", "size"),
-                valid_scores=("score", "count"),
-            )
-            .reset_index()
-        )
-
-        if self.verbose:
-            for _, row in grouped.iterrows():
-                print(f"Date: {row['date'].date()}")
-                print(
-                    f"  Articles: {row['article_count']} | Valid: {row['valid_scores']}"
-                )
-                print(f"  Average: {row['average_score']:.2f}\n")
-
-        return grouped[["date", "average_score"]]
