@@ -58,3 +58,32 @@ def test_time_based_split():
     assert X_train.index.equals(y_train.index), "train index mismatch"
     assert X_val.index.equals(y_val.index), "val index mismatch"
     assert X_test.index.equals(y_test.index), "test index mismatch"
+
+    # verify target shift correctly
+    # train set
+    assert (
+        y_train["logPriceChange"].iloc[0] == df["logPriceChange"].iloc[1]
+    ), "train logPriceChange shift mismatch"
+    assert (
+        y_train["localMin_7"].iloc[0] == df["localMin_7"].iloc[1]
+    ), "train localMin_7 shift mismatch"
+
+    # validation set
+    assert (
+        y_val["logPriceChange"].iloc[0]
+        == df["logPriceChange"].loc[X_val.index[0] + pd.DateOffset(days=1)]
+    ), "val logPriceChange shift mismatch"
+    assert (
+        y_val["localMin_7"].iloc[0]
+        == df["localMin_7"].loc[X_val.index[0] + pd.DateOffset(days=1)]
+    ), "val localMin_7 shift mismatch"
+
+    # test set
+    assert (
+        y_test["logPriceChange"].iloc[0]
+        == df["logPriceChange"].loc[X_test.index[0] + pd.DateOffset(days=1)]
+    ), "test logPriceChange shift mismatch"
+    assert (
+        y_test["localMin_7"].iloc[0]
+        == df["localMin_7"].loc[X_test.index[0] + pd.DateOffset(days=1)]
+    ), "test localMin_7 shift mismatch"

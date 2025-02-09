@@ -26,6 +26,17 @@ def time_based_split(
     val = df[(df.index > train_end) & (df.index <= val_end)]
     test = df[df.index > val_end]
 
+    # shift the target variable by 1 day
+    for target in targets:
+        train[target] = train[target].shift(-1)
+        val[target] = val[target].shift(-1)
+        test[target] = test[target].shift(-1)
+
+    # drop the nan row after shifting
+    train = train.dropna()
+    val = val.dropna()
+    test = test.dropna()
+
     # feature/target separation
     features = [col for col in df.columns if col not in targets]
 
