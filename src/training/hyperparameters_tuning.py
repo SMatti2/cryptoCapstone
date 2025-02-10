@@ -34,8 +34,8 @@ def objective(trial, X_train, y_train, X_val, y_val, train_lstm):
 
     # train
     model, history = train_lstm(X_train, y_train, X_val, y_val, params)
+    val_loss = min(history.history["val_loss"])
 
-    val_loss = min(history["val_loss"])
     return val_loss
 
 
