@@ -5,12 +5,15 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 
 def evaluate_and_plot(actual_df, predicted_df, actual_col, predicted_col, title):
+    # as we predict the logpricechange of the next day we need to shift the actual values by one
+    shifted_actual_df = actual_df[actual_col].shift(1)
+
     comparison_df = pd.DataFrame(
         {
-            "Actual": actual_df[actual_col],
+            "Actual": shifted_actual_df,
             "Predicted": predicted_df[predicted_col],
         }
-    )
+    ).dropna()
 
     # calculate MSE and MAE
     mse = mean_squared_error(comparison_df["Actual"], comparison_df["Predicted"])
