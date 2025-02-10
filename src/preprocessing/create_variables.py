@@ -158,7 +158,7 @@ def calculate_technical_indicators(df):
     df["DPO"] = df.ta.dpo()
 
     # Ichimoku Cloud
-    ichimoku_df = df.ta.ichimoku(include_leading_span=False)
+    ichimoku_df = df.ta.ichimoku(include_leading_span=False)[0]
 
     df["Ichimoku_A"] = ichimoku_df["ISA_9"]
     df["Ichimoku_B"] = ichimoku_df["ISB_26"]
