@@ -80,12 +80,8 @@ class TestLLMUtils(unittest.TestCase):
         self.assertEqual(len(result), 2)
         self.assertEqual(result.iloc[0]["date"], pd.Timestamp("2023-05-01"))
         self.assertEqual(result.iloc[0]["average_score"], 8.0)
-        self.assertEqual(result.iloc[0]["article_count"], 2)
-        self.assertEqual(result.iloc[0]["relevant_articles"], 2)
         self.assertEqual(result.iloc[1]["date"], pd.Timestamp("2023-05-02"))
         self.assertEqual(result.iloc[1]["average_score"], 6.0)
-        self.assertEqual(result.iloc[1]["article_count"], 1)
-        self.assertEqual(result.iloc[1]["relevant_articles"], 1)
 
 
 if __name__ == "__main__":

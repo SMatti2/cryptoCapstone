@@ -37,4 +37,4 @@ def add_daily_aggregates(df: pd.DataFrame):
         )
         .reset_index()
     )
-    return grouped[["date", "average_score", "article_count", "relevant_articles"]]
+    return grouped[["date", "average_score"]]
