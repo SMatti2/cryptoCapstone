@@ -45,7 +45,7 @@ def difference_non_stationary_features(
     alpha=0.05,
     verbose=False,
 ):
-    df_transformed = df.copy()
+    df
     differenced_columns = []
 
     if variables_to_exclude is None:
@@ -100,10 +100,10 @@ def difference_non_stationary_features(
             differenced = clean_series.diff()
 
             # Preserve original index structure
-            df_transformed.loc[clean_series.index, col] = differenced
+            df.loc[clean_series.index, col] = differenced
             differenced_columns.append(col)
 
-    df_transformed = df_transformed.dropna()
+    df = df.dropna()
 
     if verbose:
         print(f"\nColumn: {col}")
@@ -112,4 +112,4 @@ def difference_non_stationary_features(
         print(f"Leading NaNs dropped: {n_leading_dropped}")
         print(f"Clean data points remaining: {len(clean_series)}")
 
-    return df_transformed, differenced_columns
+    return df, differenced_columns
