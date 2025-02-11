@@ -43,6 +43,7 @@ def log_heteroskedastic_vars(
             continue
 
         series = df[col].copy()
+        processed_df[col] = processed_df[col].astype(float, errors="ignore")
 
         non_null_series = series.dropna()
         het_result = check_heteroskedasticity(non_null_series, alpha)
