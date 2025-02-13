@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlmodel import SQLModel, Field, Relationship
 
-from src.models.post import Post
+from src.models.schemas.post import Post
 
 
 class Comment(SQLModel, table=True):
