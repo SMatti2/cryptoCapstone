@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime
 from sqlmodel import SQLModel
 
-from src.llm.reddit_analyzer import RedditAnalyzer
+from src.models.reddit_analyzer import RedditAnalyzer
 from src.models.schemas.post import Post
 from src.models.schemas.comment import Comment
 
