@@ -3,8 +3,8 @@ from datetime import datetime
 from sqlmodel import SQLModel
 
 from src.llm.reddit_analyzer import RedditAnalyzer
-from src.models.post import Post
-from src.models.comment import Comment
+from src.models.schemas.post import Post
+from src.models.schemas.comment import Comment
 
 TEST_DATABASE_URL = "sqlite:///:memory:"
 
