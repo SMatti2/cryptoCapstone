@@ -45,3 +45,18 @@ def add_daily_aggregates(df: pd.DataFrame):
         .reset_index()
     )
     return grouped[["date", "average_score"]]
+
+
+def replace_nans_and_zeros_with_rolling_mean(df, window=10):
+    numeric_columns = df.select_dtypes(include=[np.number]).columns
+
+    for column in numeric_columns:
+        df[column] = df[column].replace(0, np.nan)
+
+        rolling_mean = df[column].rolling(window=window, min_periods=1).mean()
+        df[column] = df[column].fillna(rolling_mean)
+
+        if pd.isna(df[column].iloc[0]):
+            df.loc[df.index[0], column] = df[column].dropna().iloc[0]
+
+    return df
