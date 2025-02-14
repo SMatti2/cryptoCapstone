@@ -73,7 +73,7 @@ def get_daily_reddit_data(
     merged_df.rename(columns={"unique": "uniqueAuthors"}, inplace=True)
 
     merged_df = pd.merge(merged_df, score_grouped, on="date", how="outer").fillna(0)
-    merged_df.rename(columns={"avg_score": "averageScore"}, inplace=True)
+    merged_df.rename(columns={"avg_score": "averagePostScore"}, inplace=True)
 
     # reindex and sort
     date_range = pd.date_range(start=start_date, end=end_date)
@@ -88,7 +88,7 @@ def get_daily_reddit_data(
     zero_posts = (merged_df["postNumber"] == 0).sum()
     zero_comments = (merged_df["commentNumber"] == 0).sum()
     zero_authors = (merged_df["uniqueAuthors"] == 0).sum()
-    zero_score = (merged_df["averageScore"] == 0).sum()
+    zero_score = (merged_df["averagePostScore"] == 0).sum()
 
     print(f"Days with no posts: {zero_posts}")
     print(f"Days with no comments: {zero_comments}")
