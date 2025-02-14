@@ -3,7 +3,6 @@ import json
 import unittest
 from unittest.mock import patch, MagicMock
 
-# Adjust these imports to match your actual project paths
 from src.data_collection.reddit import (
     generate_new_id,
     create_post_instance,
@@ -14,12 +13,9 @@ from src.data_collection.reddit import (
     read_comments,
     process_zst_files_in_directory,
     inspect_zst_file_headers,
-    Post,
-    Comment,
-    Session,
-    Zreader,
-    engine,
 )
+from src.models.schemas.post import Post
+from src.models.schemas.comment import Comment
 
 
 class TestRedditIngestion(unittest.TestCase):

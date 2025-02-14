@@ -1,8 +1,8 @@
 from sqlmodel import create_engine, SQLModel
 from config import config
 
-from src.models.post import Post
-from src.models.comment import Comment
+from src.models.schemas.post import Post
+from src.models.schemas.comment import Comment
 
 engine = create_engine(config.DATABASE_URL, echo=False)
 
