@@ -22,9 +22,9 @@ def time_based_split(
     val_end = test_start - buffer
 
     # separate data
-    train = df[df.index <= train_end]
-    val = df[(df.index > train_end) & (df.index <= val_end)]
-    test = df[df.index > val_end]
+    train = df[df.index <= train_end].copy()
+    val = df[(df.index > train_end) & (df.index <= val_end)].copy()
+    test = df[df.index > val_end].copy()
 
     # shift the target variable by 1 day
     for target in targets:
