@@ -25,6 +25,13 @@ def append_news_scores_to_csv(output_file_path, partial_df):
             )
 
 
+def limit_words(text: str, max_words: int) -> str:
+    words = text.split()
+    if len(words) > max_words:
+        words = words[:max_words]
+    return " ".join(words)
+
+
 def add_daily_aggregates(df: pd.DataFrame):
     """group by day and compute average_score, article_count, relevant_articles."""
     df["date"] = pd.to_datetime(df["date"])
