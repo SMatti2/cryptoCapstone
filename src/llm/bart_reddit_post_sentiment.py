@@ -40,13 +40,4 @@ def analyze_reddit_posts(
     # sentiment analysis
     result_df = analyzer.analyze(df, start_date=start_date, end_date=end_date)
 
-    if "score" in result_df.columns:
-        result_df.rename(columns={"score": "averagePostsScore"}, inplace=True)
-
-    final_cols = ["date", "title", "selftext", "averagePostsScore"]
-
-    for col in final_cols:
-        if col not in result_df.columns:
-            result_df[col] = np.nan
-
-    return result_df[final_cols]
+    return result_df[out_columns]
