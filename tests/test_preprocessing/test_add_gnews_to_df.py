@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-from src.preprocessing.add_gnews_to_df import load_and_process_news_data
+from src.llm.loaders.gnews_loader import load_and_process_news_data
 
 
 class TestLoadAndProcessNewsData(unittest.TestCase):
