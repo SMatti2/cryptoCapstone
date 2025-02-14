@@ -4,8 +4,8 @@ from sqlmodel import Session
 from sqlalchemy.exc import IntegrityError
 
 from src.models.zreader import Zreader
-from src.models.post import Post
-from src.models.comment import Comment
+from src.models.schemas.post import Post
+from src.models.schemas.comment import Comment
 from src.db import engine
 
 
