@@ -1,5 +1,5 @@
 import pytest
-from src.models.comment import Comment
+from src.models.schemas.comment import Comment
 
 
 def test_comment_initialization():

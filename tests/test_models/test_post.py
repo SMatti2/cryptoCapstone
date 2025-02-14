@@ -1,7 +1,6 @@
-# tests/test_models/test_post.py
 import pytest
-from src.models.post import Post
-from src.models.comment import Comment
+from src.models.schemas.post import Post
+from src.models.schemas.comment import Comment
 
 
 def test_post_initialization():
@@ -34,7 +33,7 @@ def test_post_initialization():
     assert post.domain == "example.com"
     assert post.permalink == "/r/python/comments/12345/test_post/"
     assert post.is_video is False
-    assert post.comments == []  # Relationship should be empty initially
+    assert post.comments == []
 
 
 def test_post_partial_initialization():
@@ -63,7 +62,7 @@ def test_post_partial_initialization():
     assert post.archived is False
     assert post.domain is None
     assert post.is_video is False
-    assert post.comments == []  # Relationship should be empty initially
+    assert post.comments == []
 
 
 def test_post_field_types():
@@ -96,7 +95,7 @@ def test_post_field_types():
     assert isinstance(post.domain, str)
     assert isinstance(post.permalink, str)
     assert isinstance(post.is_video, bool)
-    assert isinstance(post.comments, list)  # Relationship should be a list
+    assert isinstance(post.comments, list)
 
 
 def test_post_relationship():
