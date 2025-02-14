@@ -42,6 +42,8 @@ class AppConfig(BaseSettings):
         "Stoch_D",
         "MFI",
         "WilliamsR",
+        "gnewsAvgSentiment",
+        "postsAvgSentiment",
     ]
 
     class Config:
