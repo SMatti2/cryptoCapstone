@@ -3,7 +3,7 @@ import optuna
 
 def objective(trial, X_train, y_train, X_val, y_val, train_lstm):
     # LSTM layers
-    num_lstm_layers = trial.suggest_int("num_lstm_layers", 1, 3)
+    num_lstm_layers = trial.suggest_int("num_lstm_layers", 2, 3)
     chosen_lstm_units = []
     for i in range(num_lstm_layers):
         chosen_lstm_units.append(
@@ -11,7 +11,7 @@ def objective(trial, X_train, y_train, X_val, y_val, train_lstm):
         )
 
     # Dense layers
-    num_dense_layers = trial.suggest_int("num_dense_layers", 0, 3)
+    num_dense_layers = trial.suggest_int("num_dense_layers", 2, 3)
     chosen_dense_units = []
     for i in range(num_dense_layers):
         chosen_dense_units.append(
