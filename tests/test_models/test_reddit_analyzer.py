@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from sqlmodel import SQLModel
 
-from src.models.reddit_analyzer import RedditAnalyzer
+from src.models.reddit_db_analyzer import RedditAnalyzer
 from src.models.schemas.post import Post
 from src.models.schemas.comment import Comment
 

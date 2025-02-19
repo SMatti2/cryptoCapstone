@@ -2,7 +2,7 @@ import pytest
 import pandas as pd
 import numpy as np
 from unittest.mock import patch, MagicMock
-from src.llm.lanchain_caller import CryptoNewsSentimentAnalyzer
+from src.llm.langchain_news_analyzer import CryptoNewsSentimentAnalyzer
 
 
 @pytest.fixture

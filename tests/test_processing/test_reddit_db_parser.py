@@ -5,7 +5,7 @@ from pathlib import Path
 from datetime import datetime
 from sqlmodel import SQLModel, create_engine, Session
 
-from src.processing.reddit_db_parser import get_daily_reddit_data
+from src.processing.reddit_data_aggregator import get_daily_reddit_data
 from src.models.schemas.post import Post
 from src.models.schemas.comment import Comment
 
