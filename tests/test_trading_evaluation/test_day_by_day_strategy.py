@@ -22,6 +22,6 @@ def test_run_trading_simulation():
     assert portfolio["capital"] >= 0, "Capital should not be negative"
     assert portfolio["holdings"] >= 0, "Holdings should not be negative"
     assert portfolio["trades_executed"] >= 0, "Trades executed should be non-negative"
-    assert (
-        len(portfolio["portfolio_values"]) == len(df_pred) - 1
+    assert len(portfolio["portfolio_values"]) == len(
+        df_pred
     ), "Portfolio value should be recorded for each trade"

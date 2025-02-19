@@ -86,13 +86,24 @@ def test_output_filename(tmp_path, ticker, expected_part_of_filename):
     output_dir = tmp_path / "data_raw"
     output_dir.mkdir()
 
-    fetch_yfinance_price_to_csv(
-        ticker, start_date, end_date, output_dir=str(output_dir)
+    # mock df
+    mock_data = pd.DataFrame(
+        {"Close": [100, 101, 102]},
+        index=pd.date_range(start=start_date, periods=3, freq="D"),
     )
 
+    with patch("yfinance.download", return_value=mock_data):
+        fetch_yfinance_price_to_csv(
+            ticker, start_date, end_date, output_dir=str(output_dir)
+        )
+
     # check if the file exists
-    expected_file_pattern = f"{expected_part_of_filename}_*"
-    files = list(output_dir.glob(expected_file_pattern))
-    assert (
-        len(files) == 1
-    ), f"Expected one file with pattern {expected_file_pattern}, found {len(files)}."
+    expected_filename = f"{expected_part_of_filename}_{start_date}_to_{end_date}.csv"
+    file_path = output_dir / expected_filename
+
+    try:
+        assert file_path.exists(), f"Expected file {expected_filename} not found."
+    finally:
+        # delete the created file
+        if file_path.exists():
+            file_path.unlink()
